@@ -9,7 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Bdo.Characters.info.Business\Bdo.Characters.info.Business.csproj" />
+    <ProjectReference Include="..\Bdo.Characters.info.Data\Bdo.Characters.info.Data.csproj" />
   </ItemGroup>
 
 </Project>
