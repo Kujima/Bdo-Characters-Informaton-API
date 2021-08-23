@@ -12,7 +12,7 @@ namespace Bdo.Characters.info.Data.Repositories
     public class CharactersRepositorie
     {
         #region Private Properties
-        private readonly CharactersProvider _charactersProvider;
+        private readonly BdoPageInfoCharactersProvider _charactersProvider;
         #endregion
 
         #region Constructor

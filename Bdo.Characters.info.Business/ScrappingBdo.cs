@@ -66,6 +66,20 @@ namespace Bdo.Characters.info.Business
         }
 
         /// <summary>
+        /// Retourne tous les professions d'un personnage
+        /// </summary>
+        /// <param name="htmlNodeCharacter"></param>
+        /// <returns></returns>
+        internal static HtmlNodeCollection GetProfessionsOneCharacter(string html)
+        {
+            HtmlDocument htmlDocument = new();
+            htmlDocument.LoadHtml(html);
+            var professions = htmlDocument.DocumentNode.SelectNodes("//span[@class='spec_level']");
+
+            return professions;
+        }
+
+        /// <summary>
         /// Retourne une collection de noeud regroupant toutes les informations pour chaque personnage
         /// </summary>
         /// <param name="htmlPageCharactersInfo"></param>

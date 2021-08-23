@@ -70,7 +70,7 @@ namespace Bdo.Characters.info.Business
         /// </summary>
         /// <param name="charactersInfoString"></param>
         /// <returns></returns>
-        private List<Character> ParseCharactersHtmlToObject(HtmlNodeCollection charactersInfoString, bool IsPrivate)
+        private static List<Character> ParseCharactersHtmlToObject(HtmlNodeCollection charactersInfoString, bool IsPrivate)
         {
             List<Character> characters = new();
             HtmlDocument htmlDocument = new();
@@ -84,7 +84,7 @@ namespace Bdo.Characters.info.Business
                     characters.Add(new Character()
                     {
                         Name = ScrappingBdo.GetNameCharacter(htmlDocument),
-                        Class = CheckReplaceSpecialCaracters(ScrappingBdo.GetClassName(htmlDocument)),
+                        Class = ToolsBox.CheckReplaceSpecialCaracters(ScrappingBdo.GetClassName(htmlDocument)),
                         Level = 0,
                         Professions = new()
                     });
@@ -100,7 +100,7 @@ namespace Bdo.Characters.info.Business
                     characters.Add(new Character()
                     {
                         Name = ScrappingBdo.GetNameCharacter(htmlDocument),
-                        Class = CheckReplaceSpecialCaracters(ScrappingBdo.GetClassName(htmlDocument)),
+                        Class = ToolsBox.CheckReplaceSpecialCaracters(ScrappingBdo.GetClassName(htmlDocument)),
                         Level = ScrappingBdo.GetLevelCharacter(htmlDocument),
                         Professions = ParseProfessionsStringToObject(ScrappingBdo.GetProfessions(htmlDocument))
                     }) ; 
@@ -117,7 +117,7 @@ namespace Bdo.Characters.info.Business
         /// </summary>
         /// <param name="htmlNodeCollection"></param>
         /// <returns></returns>
-        private List<Profession> ParseProfessionsStringToObject(HtmlNodeCollection htmlNodeCollection)
+        private static List<Profession> ParseProfessionsStringToObject(HtmlNodeCollection htmlNodeCollection)
         {
             List<string> nameProfessions = new() 
             { 
@@ -140,7 +140,7 @@ namespace Bdo.Characters.info.Business
 
             foreach (HtmlNode htmlNode in htmlNodeCollection)
             {
-                var professionString = CheckReplaceSpecialCaracters(htmlNode.InnerText);
+                var professionString = ToolsBox.CheckReplaceSpecialCaracters(htmlNode.InnerText);
 
                 // Level
                 string strLevel = Regex.Match(professionString, @"\d+").Value;
@@ -156,35 +156,6 @@ namespace Bdo.Characters.info.Business
             }
 
             return professions;
-        }
-
-        /// <summary>
-        /// Check si string contient des caracs spéciaux puis le renvoie sous forme de string
-        /// </summary>
-        /// <param name="profession"></param>
-        /// <returns></returns>
-        private static string CheckReplaceSpecialCaracters(string stringToClean)
-        {
-            string cleanString;
-
-            if (stringToClean.Contains("&#233;"))
-            {
-                cleanString = stringToClean.Replace("&#233;", "é");
-            }
-            else if (stringToClean.Contains("&#238;"))
-            {
-                cleanString = stringToClean.Replace("&#238;", "î");
-            }
-            else if (stringToClean.Contains("&#232"))
-            {
-                cleanString = stringToClean.Replace("&#232;", "è");
-            }
-            else
-            {
-                cleanString = stringToClean;
-            }
-
-            return cleanString;
         }
         #endregion
     }

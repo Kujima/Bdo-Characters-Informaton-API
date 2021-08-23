@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bdo.Characters.info.Data.DataProviders
 {
-    public class CharactersProvider
+    public class BdoPageInfoCharactersProvider
     {
         const string URL_BDO_LF_FAMILY_PAGE = "https://www.naeu.playblackdesert.com/fr-FR/Adventure";
         const string SEARCH_TYPE = "1";
@@ -15,7 +15,7 @@ namespace Bdo.Characters.info.Data.DataProviders
         
 
         private readonly HttpClient _client;
-        public CharactersProvider() => _client = new();
+        public BdoPageInfoCharactersProvider() => _client = new();
 
         /// <summary>
         /// Permet de retourner la page 
