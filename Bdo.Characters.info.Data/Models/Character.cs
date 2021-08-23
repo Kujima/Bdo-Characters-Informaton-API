@@ -10,6 +10,7 @@ namespace Bdo.Characters.info.Data.Models
     {
         public string Name { get; set; }
         public string Class { get; set; }
+        public int Level { get; set; }
         public List<Profession> Professions { get; set; }
     }
 }

@@ -28,10 +28,9 @@ namespace Bdo.Characters.info.API.Controllers
         [HttpGet("{characterName}")]
         public async Task<ActionResult<Family>> GetCharacters(string characterName)
         {
-            var famille = _charactersBusiness.GetCharacters(characterName);
+            Family family = await _charactersBusiness.GetCharacters(characterName);
 
-            throw new NotImplementedException();
-
+            return family;
         }
     }
 }

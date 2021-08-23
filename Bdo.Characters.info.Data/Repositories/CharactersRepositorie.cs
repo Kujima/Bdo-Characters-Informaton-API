@@ -11,110 +11,37 @@ namespace Bdo.Characters.info.Data.Repositories
 {
     public class CharactersRepositorie
     {
+        #region Private Properties
         private readonly CharactersProvider _charactersProvider;
-        private readonly HtmlDocument _htmlDoc;
+        #endregion
 
+        #region Constructor
         public CharactersRepositorie()
         {
             _charactersProvider = new();
-            _htmlDoc = new();
         }
-            
-            
+        #endregion
 
-        public async Task<Family> GetCharacters(string characterName)
+        #region Public Methods
+        /// <summary>
+        /// Récupère le code HTML de la page de recherche d'un personnage d'une famille
+        /// </summary>
+        /// <param name="characterName"></param>
+        /// <returns></returns>
+        public async Task<string> GetPageSearchFamily(string characterName)
         {
-            string htmlPageSearchFamily = await _charactersProvider.GetPageSearchFamily(characterName);
-            string urlFamilyInfo = GetUrlFamilyInfo(htmlPageSearchFamily);
-            string htmlPageFamilyInfo = await _charactersProvider.GetPageFamilyInfo(urlFamilyInfo);
-            string familyName = ScrappFamilyName(htmlPageFamilyInfo);
-            var charactersInfoString = ScrappHtmlCharacterInfo(htmlPageFamilyInfo);
-
-
-            Family family = new()
-            {
-                Name = familyName,
-                Characters = SetCharactersObject(charactersInfoString)
-            };
-
-            return family;
-        }
-
-
-        private List<Character> SetCharactersObject(HtmlNodeCollection charactersInfoString)
-        {
-            List<Character> characters = new();
-
-            foreach (HtmlNode htmlNodeCharacter in charactersInfoString)
-            {
-                _htmlDoc.LoadHtml(htmlNodeCharacter.InnerHtml.ToString());
-
-                characters.Add(new Character()
-                {
-                    Name = CleanNameString(_htmlDoc.DocumentNode.SelectSingleNode("//p[@class='character_name']").InnerText),
-                    Class = _htmlDoc.DocumentNode.SelectSingleNode("/div[1]/div[1]/p[2]/span/em[2]").InnerText,
-                    Professions = SetProfessions()
-                }); 
-
-            }
-
-            return characters;
+            return await _charactersProvider.GetPageSearchFamily(characterName);
         }
 
         /// <summary>
-        /// enlève les résidu html dans la variable
+        /// Récupère le code html de la page contenant l'ensemble des personnage d'une famille
         /// </summary>
-        /// <param name="nameToClean"></param>
+        /// <param name="linkCharactersInfo"></param>
         /// <returns></returns>
-        private string CleanNameString(string nameToClean)
+        public async Task<string> GetPageCharactersInfo(string linkCharactersInfo)
         {
-            string nameClean = nameToClean.Replace(@"\r\n", "").Trim();
-
-            return nameClean;
+            return await _charactersProvider.GetPageCharactersInfo(linkCharactersInfo);
         }
-
-
-        /// <summary>
-        /// Scrapp le nom de la famille
-        /// </summary>
-        /// <param name="htmlPageFamilyInfo"></param>
-        /// <returns></returns>
-        private string ScrappFamilyName(string html)
-        {
-            _htmlDoc.LoadHtml(html);
-            string familyName = _htmlDoc.DocumentNode.SelectSingleNode("//p[@class='nick']").InnerText;
-            
-            return familyName;
-        }
-
-        /// <summary>
-        /// Récupère le lien de la page repertoriant toutes les informations d'une famille 
-        /// </summary>
-        /// <param name="html"></param>
-        /// <returns></returns>
-        private string GetUrlFamilyInfo(string html)
-        {
-            _htmlDoc.LoadHtml(html);
-            var htmlNodes = _htmlDoc.DocumentNode.SelectNodes("//a[@href]");
-            var linkFound = htmlNodes.Where(a => a.GetAttributeValue("href", string.Empty).Contains("https://www.naeu.playblackdesert.com/Adventure/Profile")).First();
-            string link = linkFound.GetAttributeValue("href", string.Empty);
-            
-            return link;
-        }
-
-        /// <summary>
-        /// Récupère la liste d'information de tous les caractère de la famille 
-        /// </summary>
-        /// <param name="html"></param>
-        /// <returns></returns>
-        private HtmlNodeCollection ScrappHtmlCharacterInfo(string html)
-        {
-            _htmlDoc.LoadHtml(html);
-            var charactersInfo = _htmlDoc.DocumentNode.SelectNodes("//div[@class='character_desc_area']");
-
-            return charactersInfo;
-        }
-
-
+        #endregion
     }
 }

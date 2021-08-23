@@ -43,7 +43,7 @@ namespace Bdo.Characters.info.Data.DataProviders
         /// </summary>
         /// <param name="urlFamilyInfo"></param>
         /// <returns></returns>
-        public async Task<string> GetPageFamilyInfo(string urlFamilyInfo)
+        public async Task<string> GetPageCharactersInfo(string urlFamilyInfo)
         {
             // Création de l'entête de la requete 
             _client.DefaultRequestHeaders.Clear();
