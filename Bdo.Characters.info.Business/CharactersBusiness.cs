@@ -31,6 +31,12 @@ namespace Bdo.Characters.info.Business
             // On récupère la page html de recherche 
             string htmlPageSearchFamily = await _charactersRepositorie.GetPageSearchFamily(characterName);
 
+            // on vérifie qu'un résultat a été trouvé 
+            if (htmlPageSearchFamily.Contains("Aucun r&#233;sultat ne correspond &#224; votre recherche."))
+            {
+                return new();
+            }
+
             // On récupère le lien vers la page de description des personnages
             string linkCharactersInfo = ScrappingBdo.GetLinkCharactersInfo(htmlPageSearchFamily);
 
